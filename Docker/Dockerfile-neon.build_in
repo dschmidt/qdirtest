@@ -1,0 +1,18 @@
+FROM kdeneon/plasma:user-lts
+
+USER root
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y qt5-default ninja-build cmake build-essential qtbase5-dev
+
+WORKDIR /
+RUN install -d qdirtest
+COPY qdirtest/ /qdirtest/
+
+WORKDIR /qdirtest
+RUN install -d build
+WORKDIR /qdirtest/build
+RUN cmake -G Ninja ..
+RUN ninja
+RUN /qdirtest/build/qdir
+
+CMD /qdirtest/build/qdir
